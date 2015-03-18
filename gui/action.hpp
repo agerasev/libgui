@@ -5,13 +5,6 @@
 namespace gui
 {
 
-enum Button
-{
-	LEFT   = 0x10000,
-	MIDDLE = 0x20000,
-	RIGHT  = 0x40000
-};
-
 struct Action
 {
 public:
@@ -19,17 +12,22 @@ public:
 	{
 		NONE = 0,
 		MOTION,
-		CLICK,
-		HOLD,
 		DOWN,
 		UP,
+		ENTER,
+		LEAVE,
 		SCROLL
 	};
+	
+	static const int 
+	  BUTTON_LEFT   = 0x1,
+	  BUTTON_MIDDLE = 0x2,
+	  BUTTON_RIGHT  = 0x4;
 
 	Type type;
 	vec2 position;
 	vec2 value;
-	Button button;
+	int button;
 	int index;
 };
 

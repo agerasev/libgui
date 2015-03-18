@@ -1,28 +1,16 @@
 #pragma once
 
+#include <functional>
+#include <list>
+
 #include "object.hpp"
 
 namespace gui 
 {
 class Container : public Object
 {
-public:
-	class iterator
-	{
-	public:
-		virtual Object *operator *();
-		virtual iterator operator ++();
-		virtual bool operator ==(const iterator &i) const;
-		virtual bool operator !=(const iterator &i) const;
-	};
-	
-	class const_iterator
-	{
-		virtual const Object *operator *();
-		virtual const_iterator operator ++();
-		virtual bool operator ==(const const_iterator &i) const;
-		virtual bool operator !=(const const_iterator &i) const;
-	};
+private:
+	std::list<Object*> objects;
 	
 public:
 	Container();
@@ -32,9 +20,13 @@ public:
 	void remove(Object *obj);
 	void clear();
 	
-	virtual iterator begin();
-	virtual iterator end();
-	virtual const_iterator cbegin() const;
-	virtual const_iterator cend() const;
+	void forEach(std::function<void(Object*)> func);
+	void forEachConst(std::function<void(const Object*)> func) const;
+	
+	virtual void draw(const mat2 &m, const vec2 &d) const override;
+	virtual void drawContainer(const mat2 &m, const vec2 &d) const = 0;
+	
+	virtual void performAction(const Action &a) override;
+	virtual void performContainerAction(const Action &a) = 0;
 };
 }
