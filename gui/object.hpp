@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <map>
 
 #include <4u/la/vec.hpp>
 #include <4u/la/mat.hpp>
@@ -14,33 +13,24 @@ class Container;
 
 class Object
 {
-private:
-	std::string id;
-	
-	const Container *parent = nullptr;
-	std::map<std::string,std::string> attrib;
-	
-	vec2 bounds = nullvec2;
-	vec2 position = nullvec2;
-	
 public:
-	Object();
-	virtual ~Object();
+	Object() {}
+	virtual ~Object() {}
 	
-	void setId(const std::string &s);
-	std::string getId() const;
+	virtual void setId(const std::string &s) = 0;
+	virtual std::string getId() const = 0;
 	
-	void setBounds(const vec2 &b);
-	void setPosition(const vec2 &p);
+	virtual void setBounds(const vec2 &b) = 0;
+	virtual void setPosition(const vec2 &p) = 0;
 	
-	vec2 getBounds() const;
-	vec2 getPosition() const;
+	virtual vec2 getBounds() const = 0;
+	virtual vec2 getPosition() const = 0;
 	
-	void setParent(const Container *c);
-	const Container *getParent() const;
+	virtual void setParent(const Container *c) = 0;
+	virtual const Container *getParent() const = 0;
 	
-	void setAttribute(const std::string &key, const std::string &value);
-	std::string getAttribute(const std::string &key) const;
+	virtual void setAttribute(const std::string &key, const std::string &value) = 0;
+	virtual std::string getAttribute(const std::string &key) const = 0;
 	
 	virtual void performAction(const Action &a) = 0;
 	

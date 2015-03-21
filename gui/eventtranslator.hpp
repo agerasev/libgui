@@ -11,11 +11,11 @@ namespace gui
 class EventTranslator
 {
 public:
-	virtual void setScreen(Screen *s);
+	virtual void setScreen(Screen *s) = 0;
 };
 
 #ifndef LIBGUI_NO_LIBMEDIA
-class LibMedia_EventTranslator
+class LibMedia_EventTranslator : public EventTranslator
 {
 private:
 	Media_App *app = nullptr;
@@ -31,7 +31,7 @@ public:
 	LibMedia_EventTranslator();
 	virtual ~LibMedia_EventTranslator();
 	
-	virtual void setScreen(Screen *s);
+	virtual void setScreen(Screen *s) override;
 	void connectToApp(Media_App *app);
 	void disconnect();
 };

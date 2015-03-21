@@ -12,32 +12,34 @@ static bool __isInside(const vec2 &t, const vec2 &b, const vec2 &p)
 
 using namespace gui;
 
-Container::Container()
+RegularContainer::RegularContainer()
 {
 	
 }
 
-Container::~Container()
+RegularContainer::~RegularContainer()
 {
 	
 }
 
-void Container::add(Object *obj)
+/* RegularContainer methodes */
+
+void RegularContainer::add(Object *obj)
 {
 	objects.push_back(obj);
 }
 
-void Container::remove(Object *obj)
+void RegularContainer::remove(Object *obj)
 {
 	objects.remove(obj);
 }
 
-void Container::clear()
+void RegularContainer::clear()
 {
 	objects.clear();
 }
 
-void Container::forEach(std::function<void(Object*)> func)
+void RegularContainer::forEach(std::function<void(Object*)> func)
 {
 	for(Object *o : objects)
 	{
@@ -45,7 +47,7 @@ void Container::forEach(std::function<void(Object*)> func)
 	}
 }
 
-void Container::forEachConst(std::function<void(const Object*)> func) const
+void RegularContainer::forEachConst(std::function<void(const Object*)> func) const
 {
 	for(const Object *o : objects)
 	{
@@ -53,7 +55,7 @@ void Container::forEachConst(std::function<void(const Object*)> func) const
 	}
 }
 
-void Container::draw(const mat2 &m, const vec2 &d) const
+void RegularContainer::draw(const mat2 &m, const vec2 &d) const
 {
 	vec2 cd = d + getPosition();
 	drawContainer(m,d);
@@ -63,7 +65,7 @@ void Container::draw(const mat2 &m, const vec2 &d) const
 	});
 }
 
-void Container::performAction(const Action &a)
+void RegularContainer::performAction(const Action &a)
 {
 	Action na = a;
 	na.position -= getPosition();

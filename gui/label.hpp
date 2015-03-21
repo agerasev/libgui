@@ -6,9 +6,12 @@
 
 namespace gui 
 {
-class Label : public Object
+class Label : public virtual Object
 {
 public:
+	Label() {}
+	virtual ~Label() {}
+	
 	virtual void setText(const std::wstring &str) = 0;
 	virtual std::wstring getText() const = 0;
 };

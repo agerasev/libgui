@@ -7,25 +7,19 @@
 
 namespace gui
 {
-class Button : public Object
+class Button : public virtual Object
 {
-private:
-	std::function<void(Button*)> callback;
-	std::wstring caption;
-	bool inside = false, down = false, clicked = false;
-	bool hold = false;
-	
 public:
-	Button();
-	virtual ~Button();
+	Button() {}
+	virtual ~Button() {}
 	
-	void setCaption(const std::wstring &str);
-	std::wstring getCaption() const;
+	virtual void setCaption(const std::wstring &str) = 0;
+	virtual std::wstring getCaption() const = 0;
 	
-	void setCallback(std::function<void(Button*)> func);
-	std::function<void(Button*)> getCallback() const;
+	virtual void setCallback(std::function<void(Button*)> func) = 0;
+	virtual std::function<void(Button*)> getCallback() const = 0;
 	
-	virtual void draw(const mat2 &m, const vec2 &d) const override;
-	virtual void performAction(const Action &a) override;
+	virtual void draw(const mat2 &m, const vec2 &d) const = 0;
+	virtual void performAction(const Action &a) = 0;
 };
 }
