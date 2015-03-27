@@ -1,6 +1,6 @@
 #include "factory.hpp"
 
-#include <font.h>
+#include <font/font.h>
 #include <media/media.h>
 
 #include "impl/screen.hpp"

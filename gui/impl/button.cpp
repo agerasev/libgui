@@ -3,7 +3,7 @@
 #include <4u/la/vec.hpp>
 #include <4u/la/mat.hpp>
 
-#include <font.h>
+#include <font/font.h>
 #include <media/media.h>
 #include <graphics/graphics.h>
 
