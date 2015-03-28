@@ -2,7 +2,7 @@
 
 #include "../screen.hpp"
 
-#include "container.hpp"
+#include "regularcontainer.hpp"
 
 namespace gui
 {

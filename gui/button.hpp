@@ -4,17 +4,15 @@
 #include <string>
 
 #include "object.hpp"
+#include "text.hpp"
 
 namespace gui
 {
-class Button : public virtual Object
+class Button : public virtual Object, public virtual Text
 {
 public:
 	Button() {}
 	virtual ~Button() {}
-	
-	virtual void setCaption(const std::wstring &str) = 0;
-	virtual std::wstring getCaption() const = 0;
 	
 	virtual void setCallback(std::function<void(Button*)> func) = 0;
 	virtual std::function<void(Button*)> getCallback() const = 0;

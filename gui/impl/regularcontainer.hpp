@@ -5,7 +5,7 @@
 #include <functional>
 #include <list>
 
-#include "object.hpp"
+#include "regularobject.hpp"
 
 namespace gui
 {

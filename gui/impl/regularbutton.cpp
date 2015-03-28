@@ -1,9 +1,9 @@
-#include "button.hpp"
+#include "regularbutton.hpp"
 
 #include <4u/la/vec.hpp>
 #include <4u/la/mat.hpp>
 
-#include <font.h>
+#include <font/font.h>
 #include <media/media.h>
 #include <graphics/graphics.h>
 
@@ -16,30 +16,7 @@ RegularButton::RegularButton()
 
 RegularButton::~RegularButton()
 {
-	if(image)
-	{
-		gFreeImage(image);
-	}
-}
-
-void RegularButton::setCaption(const std::wstring &str)
-{
-	caption = str;
-	if(image)
-	{
-		gFreeImage(image);
-	}
-	int size = 28;
-	fRaster *ras = fRasterize(nullptr,caption.data(),size);
-	dx = 0;
-	dy = ras->height/2 - ras->origin_y - 0.36*size;
-	image = gGenImage(ras->width,ras->height,ras->data);
-	fFreeRaster(ras);
-}
-
-std::wstring RegularButton::getCaption() const
-{
-	return caption;
+	
 }
 
 void RegularButton::setCallback(std::function<void(Button*)> func)
@@ -87,16 +64,12 @@ void RegularButton::draw(const mat2 &m, const vec2 &d) const
 		}
 	}
 	gSetColorInt(color);
-	gTranslate(fvec2(getPosition()).data);
-	gTransform((fmat2(getBounds().x(),0,0,getBounds().y())).data);
+	vec2 pos = getPosition() + d;
+	mat2 mat = m*mat2(getBounds().x(),0,0,getBounds().y());
+	gTranslate(fvec2(pos).data);
+	gTransform(fmat2(mat).data);
 	gDrawQuad();
-	if(image)
-	{
-		gSetColorInt(G_BLACK);
-		gTranslate(fvec2(getPosition() + vec2(dx,dy)).data);
-		gTransform((0.5f*fmat2(image->width,0,0,image->height)).data);
-		gDrawImage(image);
-	}
+	drawText(m,pos);
 }
 
 void RegularButton::performAction(const Action &a)

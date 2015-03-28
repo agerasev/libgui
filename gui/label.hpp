@@ -3,16 +3,14 @@
 #include <string>
 
 #include "object.hpp"
+#include "text.hpp"
 
 namespace gui 
 {
-class Label : public virtual Object
+class Label : public virtual Object, public virtual Text
 {
 public:
 	Label() {}
 	virtual ~Label() {}
-	
-	virtual void setText(const std::wstring &str) = 0;
-	virtual std::wstring getText() const = 0;
 };
 }

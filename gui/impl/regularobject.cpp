@@ -1,4 +1,4 @@
-#include "object.hpp"
+#include "regularobject.hpp"
 
 using namespace gui;
 
