@@ -23,6 +23,8 @@ private:
 	vec2 bounds = nullvec2;
 	vec2 position = nullvec2;
 	
+	bool visible = false;
+	
 public:
 	RegularObject();
 	virtual ~RegularObject();
@@ -41,5 +43,8 @@ public:
 	
 	virtual void setAttribute(const std::string &key, const std::string &value) override;
 	virtual std::string getAttribute(const std::string &key) const override;
+	
+	virtual void setVisibility(bool v) override;
+	virtual bool getVisibility() const override;
 };
 }

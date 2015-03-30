@@ -11,10 +11,7 @@ RegularText::RegularText()
 
 RegularText::~RegularText()
 {
-	if(image)
-	{
-		gFreeImage(image);
-	}
+	freeTextImage();
 }
 
 void RegularText::setText(const std::wstring &str)
@@ -39,11 +36,21 @@ int RegularText::getTextSize() const
 	return text_size;
 }
 
+void RegularText::setTextColor(const vec4 &c)
+{
+	color = c;
+}
+
+vec4 RegularText::getTextColor() const
+{
+	return color;
+}
+
 void RegularText::drawText(const mat2 &m, const vec2 &d) const
 {
-	if(image)
+	if(image && visible)
 	{
-		gSetColorInt(G_BLACK);
+		gSetColor(fvec4(color).data);
 		gTranslate(fvec2(d + vec2(dx,dy)).data);
 		gTransform(fmat2(0.5*m*mat2(image->width,0,0,image->height)).data);
 		gDrawImage(image);
@@ -61,18 +68,40 @@ FRasterizer *RegularText::getFont() const
 	return rasterizer;
 }
 
-void RegularText::updateTextImage()
+void RegularText::createTextImage()
 {
-	if(rasterizer && text_size > 0 && text.size() > 0)
+	if(!image && rasterizer && visible && text_size > 0 && text.size() > 0)
 	{
-		if(image)
-		{
-			gFreeImage(image);
-		}
 		FRaster *ras = fRasterize(rasterizer,text.data(),text_size);
-		dx = 0;
-		dy = ras->height/2 - ras->origin_y - 0.36*text_size;
+		dx = 0 + 0.5*(ras->width%2);
+		dy = ras->height/2.0 - ras->origin_y - 0.36*text_size + 0.5*((ras->height + 1)%2);
 		image = gGenImage(ras->width,ras->height,ras->data);
 		fFreeRaster(ras);
 	}
+}
+
+void RegularText::freeTextImage()
+{
+	if(image)
+	{
+		gFreeImage(image);
+		image = nullptr;
+	}
+}
+
+void RegularText::updateTextImage()
+{
+	freeTextImage();
+	createTextImage();
+}
+
+void RegularText::setTextVisibility(bool v)
+{
+	visible = v;
+	updateTextImage();
+}
+
+bool RegularText::getTextVisibility() const
+{
+	return visible;
 }

@@ -12,18 +12,20 @@ namespace gui
 class RegularContainer : public virtual Container, public RegularObject
 {
 private:
-	std::list<Object*> objects;
+	std::list<Object*> children;
 	
 public:
 	RegularContainer();
 	virtual ~RegularContainer();
 	
-	virtual void add(Object *obj) override;
-	virtual void remove(Object *obj) override;
+	virtual void addChild(Object *obj) override;
+	virtual void removeChild(Object *obj) override;
 	virtual void clear() override;
 	
-	virtual void forEach(std::function<void(Object*)> func) override;
-	virtual void forEachConst(std::function<void(const Object*)> func) const override;
+	virtual void forEachChild(std::function<void(Object*)> func) override;
+	virtual void forEachChildConst(std::function<void(const Object*)> func) const override;
+	
+	virtual void setVisibility(bool v) override;
 	
 	virtual void draw(const mat2 &m, const vec2 &d) const override;
 	virtual void drawContainer(const mat2 &m, const vec2 &d) const = 0;

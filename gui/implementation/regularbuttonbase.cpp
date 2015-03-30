@@ -1,4 +1,4 @@
-#include "regularbutton.hpp"
+#include "regularbuttonbase.hpp"
 
 #include <4u/la/vec.hpp>
 #include <4u/la/mat.hpp>
@@ -9,61 +9,43 @@
 
 using namespace gui;
 
-RegularButton::RegularButton()
+RegularButtonBase::RegularButtonBase()
 {
 	
 }
 
-RegularButton::~RegularButton()
+RegularButtonBase::~RegularButtonBase()
 {
 	
 }
 
-void RegularButton::setCallback(std::function<void(Button*)> func)
+void RegularButtonBase::setVisibility(bool v)
 {
-	callback = func;
-}
-
-std::function<void(Button*)> RegularButton::getCallback() const
-{
-	return callback;
-}
-
-void RegularButton::draw(const mat2 &m, const vec2 &d) const
-{
-	unsigned int color = 0;
-	if(clicked)
+	RegularObject::setVisibility(v);
+	if(v)
 	{
-		color = G_GREEN;
+		setTextVisibility(v);
+		createTextImage();
 	}
 	else
 	{
-		color = G_BLUE;
+		freeTextImage();
 	}
+}
+
+void RegularButtonBase::draw(const mat2 &m, const vec2 &d) const
+{
+	vec4 c = getCurrentColor();
 	if(down)
 	{
-		if(clicked)
-		{
-			color = 0xff00cc00;
-		}
-		else
-		{
-			color = 0xffcc0000;
-		}
+		c = vec4(0.8,0.8,0.8,1.0) & getCurrentColor();
 	}
 	else
 	if(inside)
 	{
-		if(clicked)
-		{
-			color = 0xff44ff44;
-		}
-		else
-		{
-			color = 0xffff4444;
-		}
+		c = vec4(1.25,1.25,1.25,1.0) & getCurrentColor();
 	}
-	gSetColorInt(color);
+	gSetColor(fvec4(c).data);
 	vec2 pos = getPosition() + d;
 	mat2 mat = m*mat2(getBounds().x(),0,0,getBounds().y());
 	gTranslate(fvec2(pos).data);
@@ -72,7 +54,7 @@ void RegularButton::draw(const mat2 &m, const vec2 &d) const
 	drawText(m,pos);
 }
 
-void RegularButton::performAction(const Action &a)
+void RegularButtonBase::performAction(const Action &a)
 {
 	if(a.type == Action::ENTER)
 	{
@@ -98,10 +80,9 @@ void RegularButton::performAction(const Action &a)
 		if(hold)
 		{
 			hold = false;
-			clicked = !clicked;
 			if(a.button & Action::BUTTON_LEFT)
 			{
-				callback(this);
+				performClick();
 			}
 		}
 	}

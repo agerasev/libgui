@@ -5,6 +5,7 @@
 
 #include "screen.hpp"
 #include "button.hpp"
+#include "togglebutton.hpp"
 
 namespace gui
 {
@@ -20,5 +21,6 @@ public:
 	
 	Screen *produceScreen();
 	Button *produceButton();
+	ToggleButton *produceToggleButton();
 };
 }

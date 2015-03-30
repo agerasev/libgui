@@ -3,8 +3,9 @@
 #include <font/font.h>
 #include <media/media.h>
 
-#include "impl/regularscreen.hpp"
-#include "impl/regularbutton.hpp"
+#include "implementation/regularscreen.hpp"
+#include "implementation/regularbutton.hpp"
+#include "implementation/regulartogglebutton.hpp"
 
 using namespace gui;
 
@@ -46,3 +47,9 @@ Button *Factory::produceButton()
 	return button;
 }
 
+ToggleButton *Factory::produceToggleButton()
+{
+	RegularToggleButton *button = new RegularToggleButton;
+	button->setFont(rasterizer);
+	return button;
+}

@@ -10,7 +10,6 @@ namespace gui
 class Label : public virtual Object, public virtual Text
 {
 public:
-	Label() {}
 	virtual ~Label() {}
 };
 }

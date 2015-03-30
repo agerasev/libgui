@@ -71,3 +71,13 @@ std::string RegularObject::getAttribute(const std::string &key) const
 	}
 	return iterator->second;
 }
+
+void RegularObject::setVisibility(bool v)
+{
+	visible = v;
+}
+
+bool RegularObject::getVisibility() const
+{
+	return visible;
+}

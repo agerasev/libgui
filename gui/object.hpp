@@ -14,7 +14,6 @@ class Container;
 class Object
 {
 public:
-	Object() {}
 	virtual ~Object() {}
 	
 	virtual void setId(const std::string &s) = 0;
@@ -33,6 +32,9 @@ public:
 	virtual std::string getAttribute(const std::string &key) const = 0;
 	
 	virtual void performAction(const Action &a) = 0;
+	
+	virtual void setVisibility(bool v) = 0;
+	virtual bool getVisibility() const = 0;
 	
 	virtual void draw(const mat2 &m = unimat2, const vec2 &d = nullivec2) const = 0;
 };
