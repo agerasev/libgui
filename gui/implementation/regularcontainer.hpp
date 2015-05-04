@@ -30,7 +30,7 @@ public:
 	virtual void draw(const mat2 &m, const vec2 &d) const override;
 	virtual void drawContainer(const mat2 &m, const vec2 &d) const = 0;
 	
-	virtual void performAction(const Action &a) override;
-	virtual void performContainerAction(const Action &a) = 0;
+	virtual bool performAction(const Action &a) override;
+	virtual bool performContainerAction(const Action &a) = 0;
 };
 }

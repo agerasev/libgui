@@ -39,5 +39,8 @@ vec4 RegularButton::getCurrentColor() const
 
 void RegularButton::performClick()
 {
-	callback(this);
+	if(callback)
+	{
+		callback(this);
+	}
 }

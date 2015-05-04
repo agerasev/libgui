@@ -46,44 +46,50 @@ void RegularButtonBase::draw(const mat2 &m, const vec2 &d) const
 		c = vec4(1.25,1.25,1.25,1.0) & getCurrentColor();
 	}
 	gSetColor(fvec4(c).data);
-	vec2 pos = getPosition() + d;
-	mat2 mat = m*mat2(getBounds().x(),0,0,getBounds().y());
+	vec2 pos = getOffsetPosition() + d;
+	mat2 mat = m*mat2(getOffsetBounds().x(),0,0,getOffsetBounds().y());
 	gTranslate(fvec2(pos).data);
 	gTransform(fmat2(mat).data);
 	gDrawQuad();
 	drawText(m,pos);
 }
 
-void RegularButtonBase::performAction(const Action &a)
+bool RegularButtonBase::performAction(const Action &a)
 {
-	if(a.type == Action::ENTER)
+	bool caught = false;
+	if(getVisibility())
 	{
-		inside = true;
-	}
-	else
-	if(a.type == Action::LEAVE)
-	{
-		inside = false;
-		down = false;
-		hold = false;
-	}
-	else
-	if(a.type == Action::DOWN)
-	{
-		down = true;
-		hold = true;
-	}
-	else
-	if(a.type == Action::UP)
-	{
-		down = false;
-		if(hold)
+		if(a.type == Action::ENTER)
 		{
+			inside = true;
+		}
+		else
+		if(a.type == Action::LEAVE)
+		{
+			inside = false;
+			down = false;
 			hold = false;
-			if(a.button & Action::BUTTON_LEFT)
+		}
+		else
+		if(a.type == Action::DOWN)
+		{
+			down = true;
+			hold = true;
+		}
+		else
+		if(a.type == Action::UP)
+		{
+			down = false;
+			if(hold)
 			{
-				performClick();
+				hold = false;
+				if(a.button & Action::BUTTON_LEFT)
+				{
+					performClick();
+				}
 			}
 		}
+		caught = true;
 	}
+	return caught;
 }

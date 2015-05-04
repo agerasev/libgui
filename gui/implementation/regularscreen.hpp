@@ -13,6 +13,6 @@ public:
 	virtual ~RegularScreen();
 	
 	virtual void drawContainer(const mat2 &m, const vec2 &d) const override;
-	virtual void performContainerAction(const gui::Action &a) override;
+	virtual bool performContainerAction(const gui::Action &a) override;
 };
 }

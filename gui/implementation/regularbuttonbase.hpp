@@ -21,7 +21,7 @@ public:
 	virtual void setVisibility(bool v) override;
 	
 	virtual void draw(const mat2 &m, const vec2 &d) const override;
-	virtual void performAction(const Action &a) override;
+	virtual bool performAction(const Action &a) override;
 	
 	virtual vec4 getCurrentColor() const = 0;
 	virtual void performClick() = 0;

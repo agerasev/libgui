@@ -27,6 +27,7 @@ RegularContainer::~RegularContainer()
 void RegularContainer::addChild(Object *obj)
 {
 	children.push_back(obj);
+	obj->setParent(this);
 }
 
 void RegularContainer::removeChild(Object *obj)
@@ -68,7 +69,7 @@ void RegularContainer::draw(const mat2 &m, const vec2 &d) const
 {
 	if(getVisibility())
 	{
-		vec2 cd = d + getPosition();
+		vec2 cd = d + getOffsetPosition();
 		drawContainer(m,d);
 		forEachChildConst([&m,&cd](const Object *obj)
 		{
@@ -77,8 +78,9 @@ void RegularContainer::draw(const mat2 &m, const vec2 &d) const
 	}
 }
 
-void RegularContainer::performAction(const Action &a)
+bool RegularContainer::performAction(const Action &a)
 {
+	bool caught = false;
 	if(getVisibility())
 	{
 		Action na = a;
@@ -87,38 +89,39 @@ void RegularContainer::performAction(const Action &a)
 		{
 			na.type = Action::MOTION;
 		}
-		performContainerAction(a);
-		forEachChild([na](Object *obj)
+		caught = caught || performContainerAction(a);
+		forEachChild([na,&caught](Object *obj)
 		{
 			Action ca = na;
 			
-			bool now = __isInside(ca.position,obj->getBounds(),obj->getPosition());
-			bool before = __isInside(ca.position - ca.value,obj->getBounds(),obj->getPosition());
-	
+			bool now = __isInside(ca.position,obj->getOffsetBounds(),obj->getOffsetPosition());
+			bool before = __isInside(ca.position - ca.value,obj->getOffsetBounds(),obj->getOffsetPosition());
+			bool perform = false;
+			
 			if(ca.type == Action::MOTION)
 			{
 	#ifdef __MEDIA_TOUCHSCREEN
 				if(now)
 				{
-					obj->performAction(ca);
+					perform = true;
 				}
 				else
 				if(before)
 				{
 					ca.type = Action::LEAVE;
-					obj->performAction(ca);
+					perform = true;
 				}
 	#else
 				if(now)
 				{
 					if(before)
 					{
-						obj->performAction(ca);
+						perform = true;
 					}
 					else
 					{
 						ca.type = Action::ENTER;
-						obj->performAction(ca);
+						perform = true;
 					}
 				}
 				else
@@ -126,7 +129,7 @@ void RegularContainer::performAction(const Action &a)
 					if(before)
 					{
 						ca.type = Action::LEAVE;
-						obj->performAction(ca);
+						perform = true;
 					}
 				}
 	#endif
@@ -134,8 +137,13 @@ void RegularContainer::performAction(const Action &a)
 			else
 			if(now)
 			{
-				obj->performAction(ca);
+				perform = true;
+			}
+			if(perform)
+			{
+				caught = caught || obj->performAction(ca);
 			}
 		});
 	}
+	return caught;
 }

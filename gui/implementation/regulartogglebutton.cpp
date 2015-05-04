@@ -64,6 +64,9 @@ vec4 RegularToggleButton::getCurrentColor() const
 void RegularToggleButton::performClick()
 {
 	state = !state;
-	callback(this);
+	if(callback)
+	{
+		callback(this);
+	}
 }
 

@@ -32,6 +32,16 @@ void RegularObject::setPosition(const vec2 &p)
 	position = p;
 }
 
+void RegularObject::setRelativeBounds(const vec2 &rb)
+{
+	rel_bounds = rb;
+}
+
+void RegularObject::setRelativePosition(const vec2 &rp)
+{
+	rel_position = rp;
+}
+
 vec2 RegularObject::getBounds() const
 {
 	return bounds;
@@ -42,12 +52,40 @@ vec2 RegularObject::getPosition() const
 	return position;
 }
 
-void RegularObject::setParent(const Container *c)
+vec2 RegularObject::getRelativeBounds() const
+{
+	return rel_bounds;
+}
+
+vec2 RegularObject::getRelativePosition() const
+{
+	return rel_position;
+}
+
+vec2 RegularObject::getOffsetBounds() const
+{
+	if(getParent())
+	{
+		return bounds + 0.5*(getParent()->getOffsetBounds() & rel_bounds);
+	}
+	return bounds;
+}
+
+vec2 RegularObject::getOffsetPosition() const
+{
+	if(getParent())
+	{
+		return position + 0.5*(getParent()->getOffsetBounds() & rel_position);
+	}
+	return position;
+}
+
+void RegularObject::setParent(const Object *c)
 {
 	parent = c;
 }
 
-const Container *RegularObject::getParent() const
+const Object *RegularObject::getParent() const
 {
 	return parent;
 }

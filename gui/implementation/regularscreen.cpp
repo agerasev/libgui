@@ -17,7 +17,7 @@ void RegularScreen::drawContainer(const mat2 &m, const vec2 &d) const
 	
 }
 
-void RegularScreen::performContainerAction(const gui::Action &a)
+bool RegularScreen::performContainerAction(const gui::Action &a)
 {
-	
+	return false;
 }
