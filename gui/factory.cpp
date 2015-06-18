@@ -12,7 +12,8 @@ using namespace gui;
 Factory::Factory(Media_App *app)
 {
 	fInit();
-	Media_Asset *asset = Media_openAsset(app,"dejavusans.ttf");
+	const char *font_filename = "dejavusans.ttf";
+	Media_Asset *asset = Media_openAsset(app,font_filename);
 	if(asset)
 	{
 		long size = Media_getAssetLength(asset);
@@ -23,13 +24,17 @@ Factory::Factory(Media_App *app)
 	}
 	else
 	{
-		printWarn("Couldn't open asset file\n");
+		rasterizer = NULL;
+		printWarn("Couldn't open asset file %s\n",font_filename);
 	}
 }
 
 Factory::~Factory()
 {
-	fDestroyRasterizer(rasterizer);
+	if(rasterizer != NULL)
+	{
+		fDestroyRasterizer(rasterizer);
+	}
 	delete[] file_data;
 	fDispose();
 }
